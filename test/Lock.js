@@ -1,5 +1,6 @@
 import { time, loadFixture } from "@nomicfoundation/hardhat-network-helpers";
 import { anyValue } from "@nomicfoundation/hardhat-chai-matchers/withArgs.js";
+import { ethers } from "hardhat";
 import { expect } from "chai";
 
 describe("Lock", function () {
