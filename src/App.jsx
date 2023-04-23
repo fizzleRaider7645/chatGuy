@@ -1,29 +1,42 @@
 import { useState, useEffect } from 'react';
+import { socket } from './socket';
+// import { ConnectionState } from './components/ConnectionState';
+// import { ConnectionManager } from './components/ConnectionManager';
+// import { MyForm } from './components/MyForm';
 
-function App() {
-  const [users, ,] = useState([]);
+export default function App() {
+  const [isConnected, setIsConnected] = useState(socket.connected);
+  const [fooEvents, setFooEvents] = useState([]);
 
   useEffect(() => {
-    async function fetchUsers() {
-      const response = await fetch('/api/v1');
-      // const data = await response;
-      console.log(response)
-      // setUsers(data);
+    function onConnect() {
+      setIsConnected(true);
     }
 
-    fetchUsers();
+    function onDisconnect() {
+      setIsConnected(false);
+    }
+
+    function onFooEvent(value) {
+      setFooEvents(previous => [...previous, value]);
+    }
+
+    socket.on('connect', onConnect);
+    socket.on('disconnect', onDisconnect);
+    socket.on('foo', onFooEvent);
+
+    return () => {
+      socket.off('connect', onConnect);
+      socket.off('disconnect', onDisconnect);
+      socket.off('foo', onFooEvent);
+    };
   }, []);
 
   return (
-    <div>
-      <h1>Users</h1>
-      <ul>
-        {users.map((user) => (
-          <li key={user.id}>{user.name}</li>
-        ))}
-      </ul>
+    <div className="App">
+      {/* <ConnectionState isConnected={ isConnected } />
+      <ConnectionManager />
+      <MyForm /> */}
     </div>
   );
 }
-
-export default App;
