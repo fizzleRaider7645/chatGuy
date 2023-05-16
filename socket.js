@@ -6,10 +6,20 @@ const app = express();
 
 const server = http.createServer(app);
 
+let conversationMap = {};
+
+const updateConversationMap = (userOrigin, data) => {
+  if (conversationMap[userOrigin]) {
+    return conversationMap[userOrigin].push(data);
+  }
+  conversationMap[userOrigin] = [];
+  return conversationMap[userOrigin].push(data);
+};
+
 const io = new Server(server, {
   cors: {
     origin: "http://localhost:4000",
-    methods: ["GET", "POST"], // Allow requests from any origin
+    methods: ["GET", "POST"],
   },
 });
 
@@ -17,8 +27,11 @@ io.on("connection", (socket) => {
   console.log("a user connected");
 
   socket.on("message", (data) => {
-    console.log(`received message: ${data}`);
-    io.emit("message", data);
+    const userOrigin = socket.handshake.headers.origin;
+    updateConversationMap(userOrigin, data);
+    console.log("conversationMap", JSON.stringify(conversationMap));
+
+    io.emit("message", conversationMap);
   });
 
   socket.on("disconnect", () => {

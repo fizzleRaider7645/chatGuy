@@ -1,25 +1,9 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import io from "socket.io-client";
 
 const Chat = () => {
   const [messages, setMessages] = useState([]);
   const [newMessage, setNewMessage] = useState("");
-
-  // useEffect(() => {
-  //   const socket = io("http://localhost:3000");
-
-  //   socket.on("connect", () => {
-  //     console.log("Connected to server");
-  //   });
-
-  //   socket.on("message", (data) => {
-  //     setMessages((prevMessages) => [...prevMessages, data]);
-  //   });
-
-  //   return () => {
-  //     socket.disconnect();
-  //   };
-  // }, []);
 
   const handleNewMessage = (event) => {
     setNewMessage(event.target.value);
