@@ -5,21 +5,21 @@ const Chat = () => {
   const [messages, setMessages] = useState([]);
   const [newMessage, setNewMessage] = useState("");
 
-  useEffect(() => {
-    const socket = io("http://localhost:3000");
+  // useEffect(() => {
+  //   const socket = io("http://localhost:3000");
 
-    socket.on("connect", () => {
-      console.log("Connected to server");
-    });
+  //   socket.on("connect", () => {
+  //     console.log("Connected to server");
+  //   });
 
-    socket.on("message", (data) => {
-      setMessages((prevMessages) => [...prevMessages, data]);
-    });
+  //   socket.on("message", (data) => {
+  //     setMessages((prevMessages) => [...prevMessages, data]);
+  //   });
 
-    return () => {
-      socket.disconnect();
-    };
-  }, []);
+  //   return () => {
+  //     socket.disconnect();
+  //   };
+  // }, []);
 
   const handleNewMessage = (event) => {
     setNewMessage(event.target.value);
@@ -31,6 +31,9 @@ const Chat = () => {
     const socket = io("http://localhost:3000");
     socket.emit("message", newMessage);
     setNewMessage("");
+    socket.on("message", (data) => {
+      setMessages((prevMessages) => [...prevMessages, data]);
+    });
   };
 
   return (
