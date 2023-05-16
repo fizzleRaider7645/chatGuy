@@ -9,7 +9,7 @@ app.use(cors()); // Allow requests from any origin
 const server = http.createServer(app);
 const io = new Server(server, {
   cors: {
-    origin: "http://127.0.0.1:5173",
+    origin: "http://localhost:4000",
     methods: ["GET", "POST"], // Allow requests from any origin
   },
 });
