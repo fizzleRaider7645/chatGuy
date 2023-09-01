@@ -13,10 +13,10 @@ const Chat = () => {
     event.preventDefault();
 
     const socket = io("http://localhost:3000");
-    socket.emit("message", newMessage);
+    socket.emit("clientMessage", newMessage);
     setNewMessage("");
-    socket.on("message", (data) => {
-      setMessages((prevMessages) => [...prevMessages, data]);
+    socket.on("serverMessage", (data) => {
+      setMessages([...messages, data]);
     });
   };
 

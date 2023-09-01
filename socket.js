@@ -26,12 +26,12 @@ const io = new Server(server, {
 io.on("connection", (socket) => {
   console.log("a user connected");
 
-  socket.on("message", (data) => {
+  socket.on("clientMessage", (data) => {
     const userOrigin = socket.handshake.headers.origin;
     updateConversationMap(userOrigin, data);
     console.log("conversationMap", JSON.stringify(conversationMap));
 
-    io.emit("message", conversationMap);
+    io.emit("serverMessage", data);
   });
 
   socket.on("disconnect", () => {
